@@ -1,0 +1,47 @@
+service: ljlabs
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-east-1
+  profile: personal
+  timeout: 300
+  memorySize: 512
+  stage: prod
+
+package:
+  individually: true
+  excludeDevDependencies: false
+  exclude:
+    - node_modules/**
+
+custom:
+  alerts:
+    dashboards: true
+
+plugins:
+  - serverless-plugin-aws-alerts
+
+functions:
+  watchdog:
+    handler: service/watchdog/handler.handler
+    package:
+      include:
+        - service/watchdog/handler.js
+        - service/watchdog/lib/utils.js
+        - service/watchdog/lib/watchdog.js
+        - service/node_modules/**
+    events:
+      - schedule:
+          rate: rate(1 hour)
+          enabled: true
+          name: watchdog
+    alarms: # merged with function alarms
+      - name: watchdogAlarm # creates new alarm or overwrites some properties of the alarm (with the same name) from definitions
+        namespace: 'AWS/Lambda'
+        metric: errors # define custom metrics here
+        threshold: 1
+        statistic: Sum
+        period: 1800
+        evaluationPeriods: 1
+        comparisonOperator: GreaterThanOrEqualToThreshold
