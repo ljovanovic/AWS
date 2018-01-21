@@ -1,5 +1,13 @@
 service: ljlabs
 
+custom:
+  env: ${file(env/vars.yml)}
+  alerts:
+    dashboards: true
+
+plugins:
+  - serverless-plugin-aws-alerts
+
 provider:
   name: aws
   runtime: nodejs6.10
@@ -8,19 +16,15 @@ provider:
   timeout: 300
   memorySize: 512
   stage: prod
+  environment:
+    CHROMELESS_URI: ${self:custom.env.chromeless.uri}
+    CHROMELESS_API_KEY: ${self:custom.env.chromeless.api_key}
 
 package:
   individually: true
   excludeDevDependencies: false
   exclude:
     - node_modules/**
-
-custom:
-  alerts:
-    dashboards: true
-
-plugins:
-  - serverless-plugin-aws-alerts
 
 functions:
   watchdog:
