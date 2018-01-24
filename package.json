@@ -12,8 +12,7 @@
   },
   "author": "Larry Jovanovic",
   "license": "ISC",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "serverless": "1.25.0",
     "serverless-plugin-aws-alerts": "1.2.4"

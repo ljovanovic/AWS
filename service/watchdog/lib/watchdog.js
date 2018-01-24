@@ -1,20 +1,22 @@
+'use strict';
+
 class Watchdog {
-    constructor(url, selectors, port) {
+    constructor(url, selector, port) {
         this.url = url;
-        this.selectors = Array.isArray(selectors) ? selectors : [selectors];
+        this.selector = selector;
         this.port = port;
     }
 }
 
 // method to backfill and validate a user
-Watchdog.prototype.watch = function() {
+Watchdog.prototype.look = function() {
     return new Promise((resolve, reject) => {
         // imports
         const Utils = require('./utils');
 
         // get a screenshot
-        console.log('Watchdog.watch > getting screenshot...');
-        Utils.getScreenshot(this.url, this.selectors)
+        console.log('Watchdog.watch > initiating request...');
+        Utils.getContent(this.url, this.selector)
         .then(stuff => {
             console.log('Watchdog.watch > returning...', stuff);
             resolve(stuff);

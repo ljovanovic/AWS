@@ -1,11 +1,16 @@
+'use strict';
+
 module.exports = {
 
     // utility function to get a screenshot 
-    getScreenshot: function(url, selectors) {
+    getContent: function(url, contentSelector = undefined, doScreenshot = false) {
+
+        // debug
+        console.log('utils.getContent > start', {url, contentSelector, doScreenshot});
 
         // declare local vars
         const Chromeless = require('chromeless').default;
-        const domSelectors = Array.isArray(selectors) ? selectors : [selectors];
+        let jsonToReturn = '';
 
         // instantiate a chrome session
         const chrome = new Chromeless({
@@ -19,24 +24,39 @@ module.exports = {
             }
         });
 
-
+        // initate the retrieval
         return new Promise(resolve => {
             // navigate
-            console.log('Utils.getScreenshot > navigating...');
+            console.log('Utils.getContent > navigating...');
             chrome.goto(url)
             .then(() => {
-                console.log('Utils.getScreenshot > selecting...');
-                return Promise.all(domSelectors.map(domSelector => {
-                    chrome.wait(domSelector, 5000);
-                }));
-            })
-            .then(() => {
-                console.log('Utils.getScreenshot > waiting...');
+                // pause for content to load
                 return chrome.wait(5000);
             })
             .then(() => {
-                console.log('Utils.getScreenshot > screenshotting...');
-                return chrome.screenshot();
+                // retrieve any configured content
+                if (contentSelector) {
+                    console.log('Utils.getContent > selecting content...');
+                    return chrome.evaluate((cssSelector) => {
+                        // this will be executed in headless chrome
+                        const items = [].map.call(
+                            document.querySelectorAll(cssSelector), 
+                            (elem) => { return { content: elem.innerText }; }
+                        );
+                        return JSON.stringify(items);
+                    }, contentSelector);
+                } else {
+                    return [];
+                }
+            })
+            .then(availableTimes => {
+                // debug
+                console.log('Utils.getScreenshot > located available times', availableTimes);
+                // persist for later use
+                jsonToReturn = availableTimes;
+                // take screenshot if requested
+                console.log('Utils.getScreenshot > screenshotting, if necessary...');
+                return doScreenshot ? chrome.screenshot() : true;
             })
             .then(() => {
                 console.log('Utils.getScreenshot > closing...');
@@ -44,7 +64,7 @@ module.exports = {
             })
             .then(() => {
                 console.log('Utils.getScreenshot > returning...');
-                resolve(true);
+                resolve(jsonToReturn);
             })
             .catch(err => {
                 console.log('An error occurred', err);
@@ -54,5 +74,5 @@ module.exports = {
                 });
             });
         });
-    }
+    },
 };

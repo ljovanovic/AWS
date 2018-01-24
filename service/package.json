@@ -13,8 +13,8 @@
   "author": "Larry Jovanovic",
   "license": "ISC",
   "dependencies": {
-    "chromeless": "1.4.0"
+    "chromeless": "1.4.0",
+    "parse5": "4.0.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

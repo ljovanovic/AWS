@@ -19,6 +19,13 @@ provider:
   environment:
     CHROMELESS_URI: ${self:custom.env.chromeless.uri}
     CHROMELESS_API_KEY: ${self:custom.env.chromeless.api_key}
+    EMAIL_REPLY_DISPLAY_NAME: ${self:custom.env.email.reply_display_name}
+    EMAIL_REPLY_ADDRESS: ${self:custom.env.email.reply_address}
+    EMAIL_TO_ADDRESS: ${self:custom.env.email.to_address}
+  iamRoleStatements: 
+    - Effect: Allow
+      Action: "ses:SendEmail"
+      Resource: "*"
 
 package:
   individually: true
