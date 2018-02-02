@@ -8,7 +8,7 @@ module.exports.handler = (event, context, callback) => {
 
     // create the instruction set
     const itemsToWatch = [
-      { url: 'https://www.exploretock.com/tfl/search?date=2018-04-01&size=6&time=19%3A00', selector: 'span.Consumer-resultsListItemTime' },
+      // { url: 'https://www.exploretock.com/tfl/search?date=2018-04-01&size=6&time=19%3A00', selector: 'span.Consumer-resultsListItemTime' },
       { url: 'https://www.exploretock.com/tfl/search?date=2018-05-01&size=6&time=19%3A00', selector: 'span.Consumer-resultsListItemTime' },
     ];
     
@@ -24,14 +24,14 @@ module.exports.handler = (event, context, callback) => {
       console.log('handler > watched, results...', results);
 
       // for each item we would tee up content for an email
-      const emailToSend = new Email(process.env.EMAIL_TO_ADDRESS, 'French Laudry Bitches!', 'This is a test email.');
+      // const emailToSend = new Email(process.env.EMAIL_TO_ADDRESS, 'French Laudry Bitches!', 'This is a test email.');
 
       // send the email
-      console.log('sending email...');
-      return emailToSend.send();
-    })
-    .then(sendResult => {
-      console.log('email sent.', sendResult);
+      // console.log('sending email...');
+      // return emailToSend.send();
+    // })
+    // .then(sendResult => {
+      // console.log('email sent.', sendResult);
       const response = {
         statusCode: 200,
         body: JSON.stringify({
