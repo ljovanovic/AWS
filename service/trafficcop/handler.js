@@ -17,10 +17,6 @@ module.exports.handler = (event, context, callback) => {
 
     // branch accordingly
     switch (requestedPath.toLowerCase()) {
-        case '/summary': {
-            slideId = 'g306226e47d_0_7';
-            break;
-        }
         case '/zecutiv': {
             slideId = 'g2f4879174a_0_0';
             break;
@@ -42,6 +38,7 @@ module.exports.handler = (event, context, callback) => {
             slideId = 'g2f4879174a_0_60';
             break;
         }
+        case '/inft':
         case '/inforte': {
             slideId = 'g2f4879174a_0_77';
             break;
@@ -49,6 +46,11 @@ module.exports.handler = (event, context, callback) => {
         case '/contact': {
             slideId = 'g306226e47d_1_1';
             break;
+        }
+        case '/cv':
+        case '/resume': {
+            redirectUri = 'https://resume.io/r/ZJDOE';
+            slideId = '';
         }
         default: {
             break;
