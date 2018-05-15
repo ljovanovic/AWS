@@ -16,3 +16,15 @@ To get up and running the following packages / frameworks must be installed on y
 ## Deployment
 
 If everything is set up correctly, you should be able to step into the project root and perform `serverless deploy`
+
+## Package Structure
+|Path|Description|
+|--|--|
+|**/**|Contains the serverless framework and related files|
+|**/service**|Contains the implementation classes for the available services|
+
+## Services
+|Name|Description|
+|--|--|
+|**trafficcop**|Lambda @ edge function that proxies requests for professional summary slides and rewrites the URL to point the request at the appropriate google slide|
+|**watchdog**|Scheduled lambda function that crawls The French Laundry's tock page looking for available reservations at configured dates/times.  Works in conjunction with a chromeless installation contained in an external package.|
